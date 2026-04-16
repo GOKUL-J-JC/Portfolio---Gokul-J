@@ -241,3 +241,69 @@ if (roleEl) {
     i = (i + 1) % fonts.length;
   }, 3000);
 })();
+
+/* ============================================================
+   MOBILE NAV PATCH — Append this to the END of your script.js
+   ============================================================ */
+
+(function initMobileNav() {
+
+  const nav       = document.querySelector('nav');
+  const navLinks  = document.querySelector('.nav-links');
+  if (!nav || !navLinks) return;
+
+  /* ── 1. CREATE HAMBURGER BUTTON ── */
+  const toggle = document.createElement('button');
+  toggle.className = 'nav-toggle';
+  toggle.setAttribute('aria-label', 'Toggle navigation');
+  toggle.innerHTML = `
+    <span></span>
+    <span></span>
+    <span></span>
+  `;
+  nav.appendChild(toggle);
+
+  /* ── 2. OPEN / CLOSE LOGIC ── */
+  function openMenu() {
+    toggle.classList.add('open');
+    navLinks.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu() {
+    toggle.classList.remove('open');
+    navLinks.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  function isOpen() { return navLinks.classList.contains('open'); }
+
+  toggle.addEventListener('click', e => {
+    e.stopPropagation();
+    isOpen() ? closeMenu() : openMenu();
+  });
+
+  /* ── 3. CLOSE ON NAV LINK CLICK ── */
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  /* ── 4. CLOSE ON OUTSIDE TAP ── */
+  document.addEventListener('click', e => {
+    if (isOpen() && !nav.contains(e.target)) closeMenu();
+  });
+
+  /* ── 5. CLOSE ON RESIZE BACK TO DESKTOP ── */
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeMenu();
+  });
+
+  /* ── 6. HIDE TOGGLE ON DESKTOP (CSS handles it,
+           but keep aria tidy too) ── */
+  const mq = window.matchMedia('(max-width: 768px)');
+  function handleMQ(e) {
+    if (!e.matches) closeMenu();
+  }
+  mq.addEventListener('change', handleMQ);
+
+})();
