@@ -1021,3 +1021,24 @@ body::after {
   .logo { font-size: 1.1rem; letter-spacing: 3px; }
   .nav-links a { font-size: 0.8rem; }
 }
+
+@media (max-width: 768px) {
+  #cursor,
+  #cursor-trail,
+  #cursor-label,
+  #cursor-dot,
+  #cursor-ring,
+  .cursor-ripple,
+  .trail-dot {
+    display: none !important;
+  }
+
+  body {
+    cursor: auto !important;
+  }
+
+  a, button, .btn, .skill-card, .cert-card,
+  .contact-item, .edu-card, .stat-box {
+    cursor: pointer !important;
+  }
+}
