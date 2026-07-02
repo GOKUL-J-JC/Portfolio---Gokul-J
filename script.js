@@ -1,17 +1,18 @@
-/* script.js — Style 1: Dark Glassmorphism / Cyberpunk */
+/* =====================================================
+   GOKUL J — PORTFOLIO SCRIPT
+   Complete clean script.js
+===================================================== */
 
-/* ===============================
-   🔥 PAGE LOADER (ADDED)
-   =============================== */
-
+/* ─────────────────────────────────────────
+   1. PAGE LOADER
+───────────────────────────────────────── */
 (function initLoader() {
   const loader = document.createElement('div');
   loader.className = 'page-loader';
-
   loader.innerHTML = `
     <div class="loader-name">
       <span>G</span><span>O</span><span>K</span><span>U</span><span>L</span>
-      <span style="color:var(--cyan);margin:0 6px">&nbsp;</span>
+      <span style="color:var(--neon);margin:0 6px">&nbsp;</span>
       <span>J</span>
     </div>
     <div class="loader-bar-wrap">
@@ -19,16 +20,16 @@
     </div>
     <div class="loader-label">Initializing system...</div>
   `;
-
   document.body.prepend(loader);
 
-  // Remove loader after animation
   setTimeout(() => {
     loader.classList.add('hidden');
   }, 2200);
 })();
 
-// === CUSTOM CURSOR ===
+/* ─────────────────────────────────────────
+   2. CUSTOM CURSOR
+───────────────────────────────────────── */
 const cursor = document.createElement('div');
 cursor.id = 'cursor';
 const trail = document.createElement('div');
@@ -38,89 +39,88 @@ label.id = 'cursor-label';
 document.body.append(cursor, trail, label);
 
 let mouseX = 0, mouseY = 0;
+
 document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
+  mouseX = e.clientX;
+  mouseY = e.clientY;
   cursor.style.left = mouseX + 'px';
-  cursor.style.top = mouseY + 'px';
-  label.style.left = mouseX + 'px';
-  label.style.top = mouseY + 'px';
+  cursor.style.top  = mouseY + 'px';
+  label.style.left  = mouseX + 'px';
+  label.style.top   = mouseY + 'px';
   setTimeout(() => {
     trail.style.left = mouseX + 'px';
-    trail.style.top = mouseY + 'px';
+    trail.style.top  = mouseY + 'px';
   }, 80);
 });
 
-// Cursor labels per section
+/* Cursor section labels */
 const cursorMessages = {
-  'about': '[ INIT: HOME ]',
-  'skills': '[ SKILLS.EXE ]',
+  'about':      '[ INIT: HOME ]',
+  'skills':     '[ SKILLS.EXE ]',
   'experience': '[ WORK.LOG ]',
-  'education': '[ EDU.DATA ]',
-  'certs': '[ CERT.VERIFY ]',
-  'contact': '[ CONNECT.CONT ]',
+  'education':  '[ EDU.DATA ]',
+  'certs':      '[ CERT.VERIFY ]',
+  'contact':    '[ CONNECT.CONT ]',
 };
 
 const sections = document.querySelectorAll('section[id]');
+
 function getCurrentSection() {
   let current = '';
   sections.forEach(s => {
-    const top = s.getBoundingClientRect().top;
-    if (top <= window.innerHeight / 2) current = s.id;
+    if (s.getBoundingClientRect().top <= window.innerHeight / 2) current = s.id;
   });
   return current;
 }
 
 document.addEventListener('mousemove', () => {
   const sec = getCurrentSection();
-  const msg = cursorMessages[sec] || '[ NAVIGATE ]';
-  label.textContent = msg;
+  label.textContent = cursorMessages[sec] || '[ NAVIGATE ]';
   label.style.opacity = '1';
 });
 document.addEventListener('mouseleave', () => { label.style.opacity = '0'; });
 
-document.querySelectorAll('a, button, .skill-card, .stat-box').forEach(el => {
+document.querySelectorAll('a, button, .skill-card, .stat-box, .exp-card, .edu-card, .cert-card, .contact-item').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    cursor.style.width = '32px';
+    cursor.style.width  = '32px';
     cursor.style.height = '32px';
     cursor.style.borderColor = '#ff00aa';
   });
   el.addEventListener('mouseleave', () => {
-    cursor.style.width = '16px';
+    cursor.style.width  = '16px';
     cursor.style.height = '16px';
     cursor.style.borderColor = '#00f5ff';
   });
 });
 
-/* ===============================
-   🔥 H1 NAME EFFECT (Gokul J)
-   =============================== */
-
+/* ─────────────────────────────────────────
+   3. H1 NAME GLITCH EFFECT
+───────────────────────────────────────── */
 (function initH1Effect() {
   const nameSpan = document.querySelector('h1 span');
   const h1 = document.querySelector('h1');
-
   if (!nameSpan) return;
 
-  // Store text for reveal effect
   nameSpan.setAttribute('data-text', nameSpan.textContent);
 
-  // Trigger reveal after loader ends
   setTimeout(() => {
     nameSpan.classList.add('reveal');
   }, 2300);
 
-  // Random glitch effect every few seconds
   setInterval(() => {
     h1.classList.add('glitch');
     setTimeout(() => h1.classList.remove('glitch'), 200);
   }, 4000 + Math.random() * 2000);
 })();
 
-// === CANVAS GRID BACKGROUND ===
+/* ─────────────────────────────────────────
+   4. CANVAS GRID + PARTICLES
+───────────────────────────────────────── */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
+
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
+  canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 resizeCanvas();
@@ -138,30 +138,28 @@ function drawGrid() {
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
   }
 }
-drawGrid();
 
-// === FLOATING PARTICLES ===
 const particles = [];
 for (let i = 0; i < 60; i++) {
   particles.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    vx: (Math.random() - 0.5) * 0.4,
-    vy: -Math.random() * 0.6 - 0.1,
-    size: Math.random() * 2 + 0.5,
+    x:     Math.random() * window.innerWidth,
+    y:     Math.random() * window.innerHeight,
+    vx:    (Math.random() - 0.5) * 0.4,
+    vy:    -Math.random() * 0.6 - 0.1,
+    size:  Math.random() * 2 + 0.5,
     alpha: Math.random() * 0.6 + 0.2,
-    color: Math.random() > 0.5 ? '#00f5ff' : '#ff00aa'
+    color: Math.random() > 0.5 ? '#00f5ff' : '#ff00aa',
   });
 }
+
 function animParticles() {
   drawGrid();
   particles.forEach(p => {
-    p.x += p.vx; p.y += p.vy;
+    p.x += p.vx;
+    p.y += p.vy;
     if (p.y < 0) { p.y = window.innerHeight; p.x = Math.random() * window.innerWidth; }
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    ctx.fillStyle = p.color.replace(')', `, ${p.alpha})`).replace('rgb', 'rgba');
-    // fallback: just use globalAlpha
     ctx.globalAlpha = p.alpha;
     ctx.fillStyle = p.color;
     ctx.fill();
@@ -171,14 +169,16 @@ function animParticles() {
 }
 animParticles();
 
-// === 3D CARD TILT ===
+/* ─────────────────────────────────────────
+   5. 3D CARD TILT
+───────────────────────────────────────── */
 const cardWrap = document.getElementById('tilt-card');
-const card3d = document.getElementById('card3d');
+const card3d   = document.getElementById('card3d');
 if (cardWrap) {
   cardWrap.addEventListener('mousemove', e => {
     const rect = cardWrap.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    const x = (e.clientX - rect.left) / rect.width  - 0.5;
+    const y = (e.clientY - rect.top)  / rect.height - 0.5;
     card3d.style.transform = `rotateY(${x * 20}deg) rotateX(${-y * 15}deg)`;
   });
   cardWrap.addEventListener('mouseleave', () => {
@@ -186,7 +186,9 @@ if (cardWrap) {
   });
 }
 
-// === SCROLL FADE IN ===
+/* ─────────────────────────────────────────
+   6. SCROLL FADE IN
+───────────────────────────────────────── */
 const fadeEls = document.querySelectorAll('.fade-up');
 const observer = new IntersectionObserver(entries => {
   entries.forEach((entry, i) => {
@@ -197,7 +199,9 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 fadeEls.forEach(el => observer.observe(el));
 
-// === GLITCH TITLE EFFECT ===
+/* ─────────────────────────────────────────
+   7. GLITCH TITLE EFFECT
+───────────────────────────────────────── */
 const h1 = document.querySelector('h1');
 if (h1) {
   setInterval(() => {
@@ -206,7 +210,9 @@ if (h1) {
   }, 4000);
 }
 
-// === TYPING EFFECT FOR ROLE ===
+/* ─────────────────────────────────────────
+   8. TYPING EFFECT FOR ROLE
+───────────────────────────────────────── */
 const roleEl = document.querySelector('.role');
 if (roleEl) {
   const text = roleEl.textContent;
@@ -221,49 +227,20 @@ if (roleEl) {
   }, 600);
 }
 
-/* ===============================
-   🔥 FONT SWITCH (ADD HERE - END OF FILE)
-   =============================== */
-
-(function fontSwitcher() {
-  const fonts = [
-    "font-orbitron",
-    "font-arial",
-    "font-courier",
-    "font-mono"
-  ];
-
-  let i = 0;
-
-  setInterval(() => {
-    document.body.classList.remove(...fonts);
-    document.body.classList.add(fonts[i]);
-    i = (i + 1) % fonts.length;
-  }, 3000);
-})();
-
-/* ============================================================
-   MOBILE NAV PATCH — Append this to the END of your script.js
-   ============================================================ */
-
+/* ─────────────────────────────────────────
+   9. MOBILE NAV — HAMBURGER
+───────────────────────────────────────── */
 (function initMobileNav() {
-
-  const nav       = document.querySelector('nav');
-  const navLinks  = document.querySelector('.nav-links');
+  const nav      = document.querySelector('nav');
+  const navLinks = document.querySelector('.nav-links');
   if (!nav || !navLinks) return;
 
-  /* ── 1. CREATE HAMBURGER BUTTON ── */
   const toggle = document.createElement('button');
   toggle.className = 'nav-toggle';
   toggle.setAttribute('aria-label', 'Toggle navigation');
-  toggle.innerHTML = `
-    <span></span>
-    <span></span>
-    <span></span>
-  `;
+  toggle.innerHTML = '<span></span><span></span><span></span>';
   nav.appendChild(toggle);
 
-  /* ── 2. OPEN / CLOSE LOGIC ── */
   function openMenu() {
     toggle.classList.add('open');
     navLinks.classList.add('open');
@@ -281,29 +258,30 @@ if (roleEl) {
     isOpen() ? closeMenu() : openMenu();
   });
 
-  /* ── 3. CLOSE ON NAV LINK CLICK ── */
   navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      closeMenu();
-    });
+    a.addEventListener('click', () => closeMenu());
   });
 
-  /* ── 4. CLOSE ON OUTSIDE TAP ── */
   document.addEventListener('click', e => {
     if (isOpen() && !nav.contains(e.target)) closeMenu();
   });
 
-  /* ── 5. CLOSE ON RESIZE BACK TO DESKTOP ── */
   window.addEventListener('resize', () => {
     if (window.innerWidth > 768) closeMenu();
   });
 
-  /* ── 6. HIDE TOGGLE ON DESKTOP (CSS handles it,
-           but keep aria tidy too) ── */
-  const mq = window.matchMedia('(max-width: 768px)');
-  function handleMQ(e) {
+  window.matchMedia('(max-width: 768px)').addEventListener('change', e => {
     if (!e.matches) closeMenu();
-  }
-  mq.addEventListener('change', handleMQ);
-
+  });
 })();
+
+/* ─────────────────────────────────────────
+   10. ACTIVE NAV LINK ON SCROLL
+───────────────────────────────────────── */
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  const id = getCurrentSection();
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+  });
+}, { passive: true });
